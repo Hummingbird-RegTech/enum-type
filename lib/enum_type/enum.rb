@@ -20,10 +20,11 @@ module EnumType
 
       def method_missing(method_name, *arguments, &block)
         if method_name =~ /[A-Z]+/
-          unless block.nil?
-            raise InvalidDefinitionError, 'Cannot provide a block to an enum'
-          end
-          @enums[method_name] = @enum_klass.new(*arguments)
+          raise InvalidDefinitionError, 'Missing enum value' if arguments.empty?
+          raise InvalidDefinitionError, 'Cannot provide a block to an enum' unless block.nil?
+          @enums[method_name] = @enum_klass.new(*arguments.unshift(method_name.to_s))
+        elsif method_name !~ /[A-Z]+/
+          raise InvalidDefinitionError, 'Cannot use lowercase letters in enum name'
         else
           super
         end

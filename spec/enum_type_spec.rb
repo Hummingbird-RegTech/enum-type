@@ -15,10 +15,16 @@ RSpec.describe EnumType do
         end
       end
 
+      it 'defines all the enum types with the right value' do
+        expect(enum.RED.value).to eq :red
+        expect(enum.GREEN.value).to eq :green
+        expect(enum.BLUE.value).to eq :blue
+      end
+
       it 'defines all the enum types with the right name' do
-        expect(enum.RED.name).to eq :red
-        expect(enum.GREEN.name).to eq :green
-        expect(enum.BLUE.name).to eq :blue
+        expect(enum.RED.name).to eq 'RED'
+        expect(enum.GREEN.name).to eq 'GREEN'
+        expect(enum.BLUE.name).to eq 'BLUE'
       end
 
       it 'defines all the enum types with simple equality rules' do
@@ -37,7 +43,7 @@ RSpec.describe EnumType do
 
       it 'allows iterating over values' do
         expect(enum.map { |e| e }).to eq [enum.RED, enum.GREEN, enum.BLUE]
-        expect(enum.map(&:name)).to eq %i[red green blue]
+        expect(enum.map(&:value)).to eq %i[red green blue]
       end
     end
 
@@ -50,10 +56,16 @@ RSpec.describe EnumType do
         end
       end
 
+      it 'defines all the enum types with the right value' do
+        expect(enum.RED.value).to eq :red
+        expect(enum.GREEN.value).to eq :green
+        expect(enum.BLUE.value).to eq :blue
+      end
+
       it 'defines all the enum types with the right name' do
-        expect(enum.RED.name).to eq :red
-        expect(enum.GREEN.name).to eq :green
-        expect(enum.BLUE.name).to eq :blue
+        expect(enum.RED.name).to eq 'RED'
+        expect(enum.GREEN.name).to eq 'GREEN'
+        expect(enum.BLUE.name).to eq 'BLUE'
       end
 
       it 'defines other attributes correctly' do
@@ -71,7 +83,7 @@ RSpec.describe EnumType do
 
       it 'allows iterating over values' do
         expect(enum.map { |e| e }).to eq [enum.RED, enum.GREEN, enum.BLUE]
-        expect(enum.map(&:name)).to eq %i[red green blue]
+        expect(enum.map(&:value)).to eq %i[red green blue]
         expect(enum.map(&:hex)).to eq %w[#f00 #0f0 #00f]
         expect(enum.map(&:rgb)).to eq [[255, 0, 0], [0, 255, 0], [0, 0, 255]]
       end
@@ -79,17 +91,23 @@ RSpec.describe EnumType do
 
     context 'with hash attributes' do
       let(:enum) do
-        EnumType.create(name: Symbol, hex: String, rgb: Array) do
+        EnumType.create(value: Symbol, hex: String, rgb: Array) do
           RED(:red, '#f00', [255, 0, 0])
           GREEN(:green, '#0f0', [0, 255, 0])
           BLUE(:blue, '#00f', [0, 0, 255])
         end
       end
 
+      it 'defines all the enum types with the right value' do
+        expect(enum.RED.value).to eq :red
+        expect(enum.GREEN.value).to eq :green
+        expect(enum.BLUE.value).to eq :blue
+      end
+
       it 'defines all the enum types with the right name' do
-        expect(enum.RED.name).to eq :red
-        expect(enum.GREEN.name).to eq :green
-        expect(enum.BLUE.name).to eq :blue
+        expect(enum.RED.name).to eq 'RED'
+        expect(enum.GREEN.name).to eq 'GREEN'
+        expect(enum.BLUE.name).to eq 'BLUE'
       end
 
       it 'defines other attributes correctly' do
@@ -107,7 +125,7 @@ RSpec.describe EnumType do
 
       it 'allows iterating over values' do
         expect(enum.map { |e| e }).to eq [enum.RED, enum.GREEN, enum.BLUE]
-        expect(enum.map(&:name)).to eq %i[red green blue]
+        expect(enum.map(&:value)).to eq %i[red green blue]
         expect(enum.map(&:hex)).to eq %w[#f00 #0f0 #00f]
         expect(enum.map(&:rgb)).to eq [[255, 0, 0], [0, 255, 0], [0, 0, 255]]
       end
@@ -115,7 +133,7 @@ RSpec.describe EnumType do
 
     context 'with hash attributes and an invalid definition' do
       let(:enum) do
-        EnumType.create(name: Symbol, hex: String, rgb: Array) do
+        EnumType.create(value: Symbol, hex: String, rgb: Array) do
           RED(:red, '#f00', [255, 0, 0])
           GREEN(:green, 27, [0, 255, 0])
         end
@@ -123,6 +141,30 @@ RSpec.describe EnumType do
 
       it 'raises a type error' do
         expect { enum }.to raise_error EnumType::TypeError
+      end
+    end
+
+    context 'an enum with a lower case type' do
+      let(:enum) do
+        EnumType.create do
+          red(:red)
+        end
+      end
+
+      it 'raises an error' do
+        expect { enum }.to raise_error EnumType::InvalidDefinitionError
+      end
+    end
+
+    context 'an enum with an empty type' do
+      let(:enum) do
+        EnumType.create do
+          RED()
+        end
+      end
+
+      it 'raises an error' do
+        expect { enum }.to raise_error EnumType::InvalidDefinitionError
       end
     end
 

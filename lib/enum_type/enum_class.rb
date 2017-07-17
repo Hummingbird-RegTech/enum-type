@@ -12,15 +12,16 @@ module EnumType
     end
 
     def self.create_from_array(attributes)
-      attributes = [:name] + attributes
+      attributes = %i[name value] + attributes
       Struct.new(*attributes)
     end
 
     def self.create_from_hash(attributes)
-      unless attributes.key?(:name)
-        raise InvalidDefinitionError, 'Missing name attribute'
+      unless attributes.key?(:value)
+        raise InvalidDefinitionError, 'Missing value attribute'
       end
-
+      # Add name attribute as a String
+      attributes = { name: String }.merge!(attributes)
       klass = Class.new
       klass.send(:attr_reader, *attributes.keys)
       klass.send(:define_method, :initialize) do |*values|
