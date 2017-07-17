@@ -1,0 +1,13 @@
+AllCops:
+  Include:
+    - '**/Rakefile'
+    - '**/Gemfile'
+    - '**/enum-type.gemspec'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/FileName:
+  Exclude:
+    - '**/Rakefile'
+    - '**/Gemfile'
