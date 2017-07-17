@@ -11,3 +11,17 @@ Style/FileName:
   Exclude:
     - '**/Rakefile'
     - '**/Gemfile'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'lib/tasks/*.rake'
+    - 'spec/**/*_spec.rb'
+
+Metrics/LineLength:
+  Max: 100
+
+Metrics/MethodLength:
+  Max: 35
+
+Metrics/AbcSize:
+  Max: 25
