@@ -15,7 +15,7 @@ gem 'enum-type', git: 'https://github.com/thegorgon/enum-type.git'
 
 ## Usage
 
-enum-type allows you to define simple enums, enums with custom attributes and enums with typesafe custom attributes.
+enum-type allows you to define simple enums, enums with custom attributes and enums with type safe custom attributes.
 
 ### Simple Enum
 
@@ -41,7 +41,7 @@ COLORS.RED.value   # => :red
 
 ### Enum with Custom Attributes
 
-As in Java, sometimes you may want to define an enum where each enumeration has custom attributes. This can be done by passing in a list of attribute names to `EnumType.create`.
+As in Java, sometimes you may want to define an enum where each enumeration has custom attributes. This can be done by passing a list of attribute names to `EnumType.create`.
 
 ```
 COLORS = EnumType.create(:hex, :rgb) do
@@ -63,7 +63,9 @@ COLORS.RED.rgb     # => [255, 0, 0]
 
 ### Enum with Typesafe Custom Attributes
 
-If you want to add type safety to your custom attributes, you can achieve that by passing `EnumType.create` a Hash of names and types. Types can be any object that can be used as an argument to `Object#is_a?`. Because the value of the enum can be any object without type safety, if you use a Hash for type safety, you must also define the type of your value by including a `value` key in the Hash argument to `EnumType.create`.
+You can also add type safety to your custom attributes by passing `EnumType.create` a Hash of names and types. Type checking is achieved by calling `Object#is_a?`, so any object that passes `object.is_a?(YourType)` will match `YourType`.
+
+Without type safety, the value of the enum can be any object, so when adding type safety, you must also define the type of your value by including a `value` key in the Hash argument to `EnumType.create`.
 
 ```
 COLORS = EnumType.create(value: Symbol, hex: String, rgb: Array) do
@@ -82,3 +84,7 @@ COLORS = EnumType.create(value: Symbol, hex: String, rgb: Array) do
   BLUE('blue', '#00f', 'rgb(0,0,255)')
 end
 ```
+
+## Contributing
+
+Pull requests welcome!
