@@ -13,7 +13,7 @@ module EnumType
 
     def self.create_from_array(attributes)
       attributes = %i[name value] + attributes
-      Struct.new(*attributes)
+      Struct.new('Enum', *attributes)
     end
 
     def self.create_from_hash(attributes)
