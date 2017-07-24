@@ -168,6 +168,20 @@ RSpec.describe EnumType do
       end
     end
 
+    context 'with duplicated definitions' do
+      let(:enum) do
+        EnumType.create do
+          RED(:red)
+          GREEN(:green)
+          RED(:blue)
+        end
+      end
+
+      it 'raises an error' do
+        expect { enum }.to raise_error EnumType::DuplicateDefinitionError
+      end
+    end
+
     context 'with an empty block' do
       let(:enum) { EnumType.create {} }
 
