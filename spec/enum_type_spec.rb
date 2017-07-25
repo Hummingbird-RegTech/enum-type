@@ -45,6 +45,14 @@ RSpec.describe EnumType do
         expect(enum.map { |e| e }).to eq [enum.RED, enum.GREEN, enum.BLUE]
         expect(enum.map(&:value)).to eq %i[red green blue]
       end
+
+      it 'allows looking up by name' do
+        expect(enum[:RED]).to equal enum.RED
+      end
+
+      it 'allows looking up by value' do
+        expect(enum[:red]).to equal enum.RED
+      end
     end
 
     context 'with array attributes' do
@@ -174,6 +182,20 @@ RSpec.describe EnumType do
           RED(:red)
           GREEN(:green)
           RED(:blue)
+        end
+      end
+
+      it 'raises an error' do
+        expect { enum }.to raise_error EnumType::DuplicateDefinitionError
+      end
+    end
+
+    context 'with duplicated values' do
+      let(:enum) do
+        EnumType.create do
+          RED(:red)
+          GREEN(:green)
+          BLUE(:red)
         end
       end
 

@@ -85,6 +85,24 @@ COLORS = EnumType.create(value: Symbol, hex: String, rgb: Array) do
 end
 ```
 
+### Using Enums
+
+Enums are enumerable, so you can use any method from the [Enumerable](https://ruby-doc.org/core-2.4.1/Enumerable.html) module:
+
+```
+COLORS.each { |enum| puts enum.name } # => prints RED, GREEN and BLUE.
+COLORS.pluck(:value) # => [:red, :green, :blue]
+```
+
+To lookup an enum by name (as a symbol) or value, simply use the array access method, `[]`:
+
+```
+# By value
+COLORS[:red] === COLORS.RED # => true
+# By name (as a symbol)
+COLORS[:RED] === COLORS.RED # => true
+```
+
 ## Contributing
 
 Pull requests welcome!

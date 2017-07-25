@@ -7,11 +7,12 @@ module EnumType
     # Context object for evaluating the Enum block.
     # Uses method_missing to collect enum definitions
     class Context
-      attr_reader :enums
+      attr_reader :enums, :enums_by_value
 
       def initialize(enum_klass)
         @enum_klass = enum_klass
         @enums = {}
+        @enums_by_value = {}
       end
 
       def respond_to_missing?(method_name, *arguments, &block)
@@ -22,7 +23,12 @@ module EnumType
         if method_name =~ /[A-Z]+/ && !@enums.key?(method_name)
           raise InvalidDefinitionError, 'Missing enum value' if arguments.empty?
           raise InvalidDefinitionError, 'Cannot provide a block to an enum' unless block.nil?
-          @enums[method_name] = @enum_klass.new(*arguments.unshift(method_name.to_s))
+          enum = @enum_klass.new(*arguments.unshift(method_name.to_s))
+          @enums[method_name] = enum
+          if @enums_by_value[enum.value]
+            raise DuplicateDefinitionError, "Already initialized #{@enums_by_value[enum.value].name} with value #{enum.value}"
+          end
+          @enums_by_value[enum.value] = enum
         elsif @enums.key?(method_name)
           raise DuplicateDefinitionError, "Already initialized #{method_name}"
         elsif method_name !~ /[A-Z]+/
@@ -41,6 +47,7 @@ module EnumType
       context.instance_eval(&block)
       raise InvalidDefinitionError, 'Must define an enumeration' if context.enums.empty?
       @enums = context.enums
+      @enums_by_value = context.enums_by_value
       context.enums.each do |name, value|
         define_singleton_method(name) do
           value
@@ -52,6 +59,10 @@ module EnumType
       @enums.each do |_, value|
         yield(value)
       end
+    end
+
+    def [](value)
+      @enums[value] || @enums_by_value[value]
     end
 
     def respond_to_missing?(method_name, *arguments, &block)
