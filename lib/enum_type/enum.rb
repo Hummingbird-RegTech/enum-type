@@ -62,7 +62,7 @@ module EnumType
     end
 
     def [](value)
-      @enums[value] || @enums_by_value[value]
+      @enums[value.to_sym] || @enums_by_value[value]
     end
 
     def respond_to_missing?(method_name, *arguments, &block)

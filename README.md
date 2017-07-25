@@ -94,13 +94,15 @@ COLORS.each { |enum| puts enum.name } # => prints RED, GREEN and BLUE.
 COLORS.pluck(:value) # => [:red, :green, :blue]
 ```
 
-To lookup an enum by name (as a symbol) or value, simply use the array access method, `[]`:
+To lookup an enum by name (as a string or symbol) or value, simply use the array access method, `[]`:
 
 ```
 # By value
 COLORS[:red] === COLORS.RED # => true
-# By name (as a symbol)
+# By name as a symbol
 COLORS[:RED] === COLORS.RED # => true
+# By name as a string
+COLORS['RED'] === COLORS.RED # => true
 ```
 
 ## Contributing

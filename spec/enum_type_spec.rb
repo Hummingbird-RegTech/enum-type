@@ -50,6 +50,10 @@ RSpec.describe EnumType do
         expect(enum[:RED]).to equal enum.RED
       end
 
+      it 'allows looking up by string name' do
+        expect(enum['RED']).to equal enum.RED
+      end
+
       it 'allows looking up by value' do
         expect(enum[:red]).to equal enum.RED
       end
