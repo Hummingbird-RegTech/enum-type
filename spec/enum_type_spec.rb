@@ -65,6 +65,18 @@ RSpec.describe EnumType do
       it 'allows getting the list of names as symbols' do
         expect(enum.names).to eq %i[RED GREEN BLUE]
       end
+
+      it 'defines to_s as name on the enums' do
+        expect(enum.RED.to_s).to eq 'RED'
+        expect(enum.GREEN.to_s).to eq 'GREEN'
+        expect(enum.BLUE.to_s).to eq 'BLUE'
+      end
+
+      it 'defines inspect as a reasonable name on the enums' do
+        expect(enum.RED.inspect).to eq '#<Enum:RED :red>'
+        expect(enum.GREEN.inspect).to eq '#<Enum:GREEN :green>'
+        expect(enum.BLUE.inspect).to eq '#<Enum:BLUE :blue>'
+      end
     end
 
     context 'with array attributes' do
@@ -115,6 +127,18 @@ RSpec.describe EnumType do
       it 'allows getting the list of names as symbols' do
         expect(enum.names).to eq %i[RED GREEN BLUE]
       end
+
+      it 'defines to_s as name on the enums' do
+        expect(enum.RED.to_s).to eq 'RED'
+        expect(enum.GREEN.to_s).to eq 'GREEN'
+        expect(enum.BLUE.to_s).to eq 'BLUE'
+      end
+
+      it 'defines inspect as a reasonable name on the enums' do
+        expect(enum.RED.inspect).to eq '#<Enum:RED :red>'
+        expect(enum.GREEN.inspect).to eq '#<Enum:GREEN :green>'
+        expect(enum.BLUE.inspect).to eq '#<Enum:BLUE :blue>'
+      end
     end
 
     context 'with hash attributes' do
@@ -164,6 +188,18 @@ RSpec.describe EnumType do
 
       it 'allows getting the list of names as symbols' do
         expect(enum.names).to eq %i[RED GREEN BLUE]
+      end
+
+      it 'defines to_s as name on the enums' do
+        expect(enum.RED.to_s).to eq 'RED'
+        expect(enum.GREEN.to_s).to eq 'GREEN'
+        expect(enum.BLUE.to_s).to eq 'BLUE'
+      end
+
+      it 'defines inspect as a reasonable string on the enums' do
+        expect(enum.RED.inspect).to eq '#<Enum:RED "red">'
+        expect(enum.GREEN.inspect).to eq '#<Enum:GREEN "green">'
+        expect(enum.BLUE.inspect).to eq '#<Enum:BLUE "blue">'
       end
     end
 

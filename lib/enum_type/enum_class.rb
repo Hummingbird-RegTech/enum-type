@@ -13,7 +13,9 @@ module EnumType
 
     def self.create_from_array(attributes)
       attributes = %i[name value] + attributes
-      Struct.new(*attributes)
+      klass = Struct.new(*attributes)
+      define_inspection_methods(klass)
+      klass
     end
 
     def self.create_from_hash(attributes)
@@ -36,7 +38,19 @@ module EnumType
           instance_variable_set("@#{name}", values[index])
         end
       end
+      define_inspection_methods(klass)
       klass
     end
+
+    def self.define_inspection_methods(klass)
+      klass.send(:define_method, :to_s) do
+        name.to_s
+      end
+
+      klass.send(:define_method, :inspect) do
+        "\#<Enum:#{name} #{value.inspect}>"
+      end
+    end
+    private_class_method :define_inspection_methods
   end
 end
