@@ -65,6 +65,14 @@ module EnumType
       @enums[value.to_sym] || @enums_by_value[value]
     end
 
+    def values
+      @enums_by_value.keys
+    end
+
+    def names
+      @enums.keys
+    end
+
     def respond_to_missing?(method_name, *arguments, &block)
       method_name =~ /[A-Z]+/ && arguments.empty? && block.nil? || super
     end

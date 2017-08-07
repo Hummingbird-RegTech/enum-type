@@ -42,7 +42,7 @@ RSpec.describe EnumType do
       end
 
       it 'allows iterating over values' do
-        expect(enum.map { |e| e }).to eq [enum.RED, enum.GREEN, enum.BLUE]
+        expect(enum.entries).to eq [enum.RED, enum.GREEN, enum.BLUE]
         expect(enum.map(&:value)).to eq %i[red green blue]
       end
 
@@ -56,6 +56,14 @@ RSpec.describe EnumType do
 
       it 'allows looking up by value' do
         expect(enum[:red]).to equal enum.RED
+      end
+
+      it 'allows getting the list of values' do
+        expect(enum.values).to eq %i[red green blue]
+      end
+
+      it 'allows getting the list of names as symbols' do
+        expect(enum.names).to eq %i[RED GREEN BLUE]
       end
     end
 
@@ -94,26 +102,34 @@ RSpec.describe EnumType do
       end
 
       it 'allows iterating over values' do
-        expect(enum.map { |e| e }).to eq [enum.RED, enum.GREEN, enum.BLUE]
+        expect(enum.entries).to eq [enum.RED, enum.GREEN, enum.BLUE]
         expect(enum.map(&:value)).to eq %i[red green blue]
         expect(enum.map(&:hex)).to eq %w[#f00 #0f0 #00f]
         expect(enum.map(&:rgb)).to eq [[255, 0, 0], [0, 255, 0], [0, 0, 255]]
+      end
+
+      it 'allows getting the list of values' do
+        expect(enum.values).to eq %i[red green blue]
+      end
+
+      it 'allows getting the list of names as symbols' do
+        expect(enum.names).to eq %i[RED GREEN BLUE]
       end
     end
 
     context 'with hash attributes' do
       let(:enum) do
-        EnumType.create(value: Symbol, hex: String, rgb: Array) do
-          RED(:red, '#f00', [255, 0, 0])
-          GREEN(:green, '#0f0', [0, 255, 0])
-          BLUE(:blue, '#00f', [0, 0, 255])
+        EnumType.create(value: String, hex: String, rgb: Array) do
+          RED('red', '#f00', [255, 0, 0])
+          GREEN('green', '#0f0', [0, 255, 0])
+          BLUE('blue', '#00f', [0, 0, 255])
         end
       end
 
       it 'defines all the enum types with the right value' do
-        expect(enum.RED.value).to eq :red
-        expect(enum.GREEN.value).to eq :green
-        expect(enum.BLUE.value).to eq :blue
+        expect(enum.RED.value).to eq 'red'
+        expect(enum.GREEN.value).to eq 'green'
+        expect(enum.BLUE.value).to eq 'blue'
       end
 
       it 'defines all the enum types with the right name' do
@@ -136,10 +152,18 @@ RSpec.describe EnumType do
       end
 
       it 'allows iterating over values' do
-        expect(enum.map { |e| e }).to eq [enum.RED, enum.GREEN, enum.BLUE]
-        expect(enum.map(&:value)).to eq %i[red green blue]
+        expect(enum.entries).to eq [enum.RED, enum.GREEN, enum.BLUE]
+        expect(enum.map(&:value)).to eq %w[red green blue]
         expect(enum.map(&:hex)).to eq %w[#f00 #0f0 #00f]
         expect(enum.map(&:rgb)).to eq [[255, 0, 0], [0, 255, 0], [0, 0, 255]]
+      end
+
+      it 'allows getting the list of values' do
+        expect(enum.values).to eq %w[red green blue]
+      end
+
+      it 'allows getting the list of names as symbols' do
+        expect(enum.names).to eq %i[RED GREEN BLUE]
       end
     end
 

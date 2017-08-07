@@ -105,6 +105,13 @@ COLORS[:RED] === COLORS.RED # => true
 COLORS['RED'] === COLORS.RED # => true
 ```
 
+You can also access all the enums using `#entries` or just get a list of names (as symbols) or values using `#values` or `#names`.
+
+```
+COLORS.entries # => [COLORS.RED, COLORS.GREEN, COLORS.BLUE]
+COLORS.values # => [:red, :green, :blue], equivalent to #pluck(:value)
+COLORS.names # => [:RED, :GREEN, :BLUE], equivalent to #pluck(:name)
+
 ## Contributing
 
 Pull requests welcome!
