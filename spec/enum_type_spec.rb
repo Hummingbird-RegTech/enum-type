@@ -72,10 +72,14 @@ RSpec.describe EnumType do
         expect(enum.BLUE.to_s).to eq 'BLUE'
       end
 
-      it 'defines inspect as a reasonable name on the enums' do
+      it 'defines inspect as a reasonable string on the enums' do
         expect(enum.RED.inspect).to eq '#<Enum:RED :red>'
         expect(enum.GREEN.inspect).to eq '#<Enum:GREEN :green>'
         expect(enum.BLUE.inspect).to eq '#<Enum:BLUE :blue>'
+      end
+
+      it 'defines inspect as a reasonable string on the enum itself' do
+        expect(enum.inspect).to eq '#<EnumType enums=[RED, GREEN, BLUE]>'
       end
     end
 
@@ -134,10 +138,14 @@ RSpec.describe EnumType do
         expect(enum.BLUE.to_s).to eq 'BLUE'
       end
 
-      it 'defines inspect as a reasonable name on the enums' do
+      it 'defines inspect as a reasonable string on the enums' do
         expect(enum.RED.inspect).to eq '#<Enum:RED :red>'
         expect(enum.GREEN.inspect).to eq '#<Enum:GREEN :green>'
         expect(enum.BLUE.inspect).to eq '#<Enum:BLUE :blue>'
+      end
+
+      it 'defines inspect as a reasonable string on the enum itself' do
+        expect(enum.inspect).to eq '#<EnumType enums=[RED, GREEN, BLUE]>'
       end
     end
 
@@ -200,6 +208,10 @@ RSpec.describe EnumType do
         expect(enum.RED.inspect).to eq '#<Enum:RED "red">'
         expect(enum.GREEN.inspect).to eq '#<Enum:GREEN "green">'
         expect(enum.BLUE.inspect).to eq '#<Enum:BLUE "blue">'
+      end
+
+      it 'defines inspect as a reasonable string on the enum itself' do
+        expect(enum.inspect).to eq '#<EnumType enums=[RED, GREEN, BLUE]>'
       end
     end
 

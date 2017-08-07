@@ -73,6 +73,14 @@ module EnumType
       @enums.keys
     end
 
+    def to_s
+      inspect
+    end
+
+    def inspect
+      "#<EnumType enums=[#{names.map(&:to_s).join(', ')}]>"
+    end
+
     def respond_to_missing?(method_name, *arguments, &block)
       method_name =~ /[A-Z]+/ && arguments.empty? && block.nil? || super
     end
