@@ -215,6 +215,62 @@ RSpec.describe EnumType do
       end
     end
 
+    context 'with array attributes and :value as an attribute' do
+      let(:enum) do
+        EnumType.create(:value, :rgb) do
+          RED(:red, '#f00')
+          GREEN(:green, '#0f0')
+          BLUE(:blue, '#00f')
+        end
+      end
+
+      it 'raises an error' do
+        expect { enum }.to raise_error EnumType::InvalidDefinitionError
+      end
+    end
+
+    context 'with array attributes and "name" as an attribute' do
+      let(:enum) do
+        EnumType.create('name', 'rgb') do
+          RED(:red, '#f00')
+          GREEN(:green, '#0f0')
+          BLUE(:blue, '#00f')
+        end
+      end
+
+      it 'raises an error' do
+        expect { enum }.to raise_error EnumType::InvalidDefinitionError
+      end
+    end
+
+    context 'with array attributes and "value" as an attribute' do
+      let(:enum) do
+        EnumType.create('value', 'rgb') do
+          RED(:red, '#f00')
+          GREEN(:green, '#0f0')
+          BLUE(:blue, '#00f')
+        end
+      end
+
+      it 'raises an error' do
+        expect { enum }.to raise_error EnumType::InvalidDefinitionError
+      end
+    end
+
+    context 'with array attributes and :name as an attribute' do
+      let(:enum) do
+        EnumType.create(:name, :rgb) do
+          RED(:red, '#f00')
+          GREEN(:green, '#0f0')
+          BLUE(:blue, '#00f')
+        end
+      end
+
+      it 'raises an error' do
+        expect { enum }.to raise_error EnumType::InvalidDefinitionError
+      end
+    end
+
     context 'with hash attributes and an invalid definition' do
       let(:enum) do
         EnumType.create(value: Symbol, hex: String, rgb: Array) do

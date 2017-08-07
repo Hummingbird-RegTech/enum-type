@@ -12,6 +12,13 @@ module EnumType
     end
 
     def self.create_from_array(attributes)
+      if attributes.include?(:name) ||
+         attributes.include?(:value) ||
+         attributes.include?('name') ||
+         attributes.include?('value')
+        raise InvalidDefinitionError, 'Cannot use name or value as attribute names'
+      end
+
       attributes = %i[name value] + attributes
       klass = Struct.new(*attributes)
       define_inspection_methods(klass)
