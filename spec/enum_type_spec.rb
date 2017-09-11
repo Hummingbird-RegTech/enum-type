@@ -58,6 +58,10 @@ RSpec.describe EnumType do
         expect(enum[:red]).to equal enum.RED
       end
 
+      it 'returns nil if lookup by nil' do
+        expect(enum[nil]).to be_nil
+      end
+
       it 'allows getting the list of values' do
         expect(enum.values).to eq %i[red green blue]
       end

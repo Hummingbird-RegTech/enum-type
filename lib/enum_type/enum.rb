@@ -62,6 +62,7 @@ module EnumType
     end
 
     def [](value)
+      return nil if value.nil?
       @enums[value.to_sym] || @enums_by_value[value]
     end
 
