@@ -231,6 +231,72 @@ RSpec.describe EnumType do
       end
     end
 
+    context 'with hash attributes and dry types' do
+      let(:value_type) { Dry.Types::String }
+      let(:hex_type) { Dry.Types::String.optional }
+      let(:rgb_type) do
+        Dry.Types.Array(
+          Dry.Types::Strict::Integer.constrained(lteq: 255, gteq: 0)
+        ).constrained(size: 3)
+      end
+      let(:enum) do
+        EnumType.create(value: value_type, hex: hex_type, rgb: rgb_type) do
+          RED('red', '#f00', [255, 0, 0])
+          GREEN('green', '#0f0', [0, 255, 0])
+          BLUE('blue', '#00f', [0, 0, 255])
+        end
+      end
+
+      it 'defines the enum types with the right value' do
+        expect(enum.RED).to have_attributes(
+          value: 'red',
+          name: 'RED',
+          hex: '#f00',
+          rgb: [255, 0, 0]
+        )
+        expect(enum.GREEN).to have_attributes(
+          value: 'green',
+          name: 'GREEN',
+          hex: '#0f0',
+          rgb: [0, 255, 0]
+        )
+        expect(enum.BLUE).to have_attributes(
+          value: 'blue',
+          name: 'BLUE',
+          hex: '#00f',
+          rgb: [0, 0, 255]
+        )
+      end
+
+      context 'when an enum doesnt match the types' do
+        let(:enum) do
+          EnumType.create(value: value_type, hex: hex_type, rgb: rgb_type) do
+            RED(nil, '#f00', [255, 0, 0])
+            GREEN('green', '#0f0', [0, 255, 0])
+            BLUE('blue', '#00f', [0, 0, 255])
+          end
+        end
+
+        it 'raises a TypeError' do
+          expect { enum }.to raise_error EnumType::TypeError
+        end
+      end
+
+      context 'when an enum doesnt match the type constraints' do
+        let(:enum) do
+          EnumType.create(value: value_type, hex: hex_type, rgb: rgb_type) do
+            RED('red', '#f00', [256, 0, 0])
+            GREEN('green', '#0f0', [-1, 255, 0])
+            BLUE('blue', '#00f', [0, 255])
+          end
+        end
+
+        it 'raises a TypeError' do
+          expect { enum }.to raise_error EnumType::TypeError
+        end
+      end
+    end
+
     context 'with array attributes and :value as an attribute' do
       let(:enum) do
         EnumType.create(:value, :rgb) do

@@ -3,6 +3,7 @@ AllCops:
     - '**/Rakefile'
     - '**/Gemfile'
     - '**/enum-type.gemspec'
+    - '**/*.rb'
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -25,3 +26,13 @@ Metrics/MethodLength:
 
 Metrics/AbcSize:
   Max: 25
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Style/AccessModifierDeclarations:
+  EnforcedStyle: inline
+

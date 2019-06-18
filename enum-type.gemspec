@@ -1,4 +1,4 @@
-require File.expand_path('../lib/enum_type/version', __FILE__)
+require File.expand_path('lib/enum_type/version', __dir__)
 
 Gem::Specification.new do |s|
   s.name         = 'enum-type'
@@ -13,6 +13,12 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.homepage     = 'https://github.com/thegorgon/enum-type'
   s.license      = 'MIT'
+  s.required_ruby_version = '>= 2.5.0'
+  s.add_runtime_dependency 'dry-types', '~> 1.0'
+  s.add_development_dependency 'byebug', '~> 9.0.6'
+  s.add_development_dependency 'pry', '~> 0.10.4'
+  s.add_development_dependency 'rspec', '~> 3.6'
+  s.add_development_dependency 'rubocop', '~> 0.71.0'
   # lol - required for validation
   s.rubyforge_project = 'enum-type'
 end

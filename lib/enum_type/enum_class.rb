@@ -1,3 +1,5 @@
+require 'enum_type/type_checker'
+
 module EnumType
   # Simple utility for creating enumeration classes from
   # attribute lists. Currently just spits out a Struct, but
@@ -28,7 +30,6 @@ module EnumType
         raise InvalidDefinitionError, 'Wrong attribute count' if values.length != attributes.length
 
         attributes.each_with_index do |name, index|
-          value = values[index]
           instance_variable_set("@#{name}", values[index])
         end
       end
@@ -37,9 +38,8 @@ module EnumType
     end
 
     def self.create_from_hash(attributes)
-      unless attributes.key?(:value)
-        raise InvalidDefinitionError, 'Missing value attribute'
-      end
+      raise InvalidDefinitionError, 'Missing value attribute' unless attributes.key?(:value)
+
       # Add name attribute as a String
       attributes = { name: String }.merge!(attributes)
       klass = Class.new
@@ -54,7 +54,7 @@ module EnumType
         attributes.keys.each_with_index do |name, index|
           value = values[index]
           kind = attributes[name]
-          raise TypeError, "Invalid type, #{value},should be #{kind}" unless value.is_a?(kind)
+          TypeChecker.new(kind, value).check!
           instance_variable_set("@#{name}", values[index])
         end
       end

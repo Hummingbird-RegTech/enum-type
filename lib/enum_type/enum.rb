@@ -24,10 +24,12 @@ module EnumType
         if method_name =~ /[A-Z]+/ && !@enums.key?(method_name)
           raise InvalidDefinitionError, 'Missing enum value' if arguments.empty?
           raise InvalidDefinitionError, 'Cannot provide a block to an enum' unless block.nil?
+
           enum = @enum_klass.new(*arguments.unshift(@enum_type, method_name.to_s))
           @enums[method_name] = enum
           if @enums_by_value[enum.value]
-            raise DuplicateDefinitionError, "Already initialized #{@enums_by_value[enum.value].name} with value #{enum.value}"
+            raise DuplicateDefinitionError,
+                  "Already initialized #{@enums_by_value[enum.value].name} with value #{enum.value}"
           end
           @enums_by_value[enum.value] = enum
         elsif @enums.key?(method_name)
@@ -47,6 +49,7 @@ module EnumType
       context = Context.new(enum_class, self)
       context.instance_eval(&block)
       raise InvalidDefinitionError, 'Must define an enumeration' if context.enums.empty?
+
       @enums = context.enums
       @enums_by_value = context.enums_by_value
       context.enums.each do |name, value|
@@ -64,6 +67,7 @@ module EnumType
 
     def [](value)
       return nil if value.nil?
+
       @enums[value.to_sym] || @enums_by_value[value]
     end
 
@@ -91,6 +95,7 @@ module EnumType
       if method_name =~ /[A-Z]+/ && arguments.empty? && block.nil?
         raise UndefinedEnumError, "Undefined enumeration, #{method_name}"
       end
+
       super
     end
   end
