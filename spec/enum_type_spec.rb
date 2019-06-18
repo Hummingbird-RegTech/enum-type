@@ -33,6 +33,12 @@ RSpec.describe EnumType do
         expect(enum.BLUE).to eq enum.BLUE
       end
 
+      it 'defines an enum type accessor on the enum' do
+        expect(enum.RED.enum_type).to eq enum
+        expect(enum.GREEN.enum_type).to eq enum
+        expect(enum.BLUE.enum_type).to eq enum
+      end
+
       it 'raises error on invalid enum name' do
         expect { enum.VIOLET }.to raise_error EnumType::UndefinedEnumError
       end
@@ -100,6 +106,12 @@ RSpec.describe EnumType do
         expect(enum.RED.value).to eq :red
         expect(enum.GREEN.value).to eq :green
         expect(enum.BLUE.value).to eq :blue
+      end
+
+      it 'defines an enum type accessor on the enum' do
+        expect(enum.RED.enum_type).to eq enum
+        expect(enum.GREEN.enum_type).to eq enum
+        expect(enum.BLUE.enum_type).to eq enum
       end
 
       it 'defines all the enum types with the right name' do

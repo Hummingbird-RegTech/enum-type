@@ -20,7 +20,18 @@ module EnumType
       end
 
       attributes = %i[name value] + attributes
-      klass = Struct.new(*attributes)
+      klass = Class.new
+      klass.send(:attr_reader, *attributes)
+      klass.send(:attr_reader, :enum_type)
+      klass.send(:define_method, :initialize) do |*values|
+        @enum_type = values.shift
+        raise InvalidDefinitionError, 'Wrong attribute count' if values.length != attributes.length
+
+        attributes.each_with_index do |name, index|
+          value = values[index]
+          instance_variable_set("@#{name}", values[index])
+        end
+      end
       define_inspection_methods(klass)
       klass
     end
@@ -33,7 +44,9 @@ module EnumType
       attributes = { name: String }.merge!(attributes)
       klass = Class.new
       klass.send(:attr_reader, *attributes.keys)
+      klass.send(:attr_reader, :enum_type)
       klass.send(:define_method, :initialize) do |*values|
+        @enum_type = values.shift
         if values.length != attributes.keys.length
           raise InvalidDefinitionError, 'Wrong attribute count'
         end

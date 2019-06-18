@@ -9,8 +9,9 @@ module EnumType
     class Context
       attr_reader :enums, :enums_by_value
 
-      def initialize(enum_klass)
+      def initialize(enum_klass, enum_type)
         @enum_klass = enum_klass
+        @enum_type = enum_type
         @enums = {}
         @enums_by_value = {}
       end
@@ -23,7 +24,7 @@ module EnumType
         if method_name =~ /[A-Z]+/ && !@enums.key?(method_name)
           raise InvalidDefinitionError, 'Missing enum value' if arguments.empty?
           raise InvalidDefinitionError, 'Cannot provide a block to an enum' unless block.nil?
-          enum = @enum_klass.new(*arguments.unshift(method_name.to_s))
+          enum = @enum_klass.new(*arguments.unshift(@enum_type, method_name.to_s))
           @enums[method_name] = enum
           if @enums_by_value[enum.value]
             raise DuplicateDefinitionError, "Already initialized #{@enums_by_value[enum.value].name} with value #{enum.value}"
@@ -43,7 +44,7 @@ module EnumType
 
     def initialize(attributes, &block)
       enum_class = EnumClass.create(attributes)
-      context = Context.new(enum_class)
+      context = Context.new(enum_class, self)
       context.instance_eval(&block)
       raise InvalidDefinitionError, 'Must define an enumeration' if context.enums.empty?
       @enums = context.enums
