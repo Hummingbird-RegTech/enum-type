@@ -59,9 +59,9 @@ module EnumType
       end
     end
 
-    def each
+    def each(&block)
       @enums.each do |_, value|
-        yield(value)
+        block.call(value)
       end
     end
 
