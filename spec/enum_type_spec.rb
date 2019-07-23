@@ -91,6 +91,12 @@ RSpec.describe EnumType do
       it 'defines inspect as a reasonable string on the enum itself' do
         expect(enum.inspect).to eq '#<EnumType enums=[RED, GREEN, BLUE]>'
       end
+
+      it 'returns the name for #as_json' do
+        expect(enum.RED.as_json).to eq("RED")
+        expect(enum.GREEN.as_json).to eq("GREEN")
+        expect(enum.BLUE.as_json).to eq("BLUE")
+      end
     end
 
     context 'with array attributes' do
@@ -163,6 +169,12 @@ RSpec.describe EnumType do
       it 'defines inspect as a reasonable string on the enum itself' do
         expect(enum.inspect).to eq '#<EnumType enums=[RED, GREEN, BLUE]>'
       end
+
+      it 'returns the name for #as_json' do
+        expect(enum.RED.as_json).to eq("RED")
+        expect(enum.GREEN.as_json).to eq("GREEN")
+        expect(enum.BLUE.as_json).to eq("BLUE")
+      end
     end
 
     context 'with hash attributes' do
@@ -228,6 +240,12 @@ RSpec.describe EnumType do
 
       it 'defines inspect as a reasonable string on the enum itself' do
         expect(enum.inspect).to eq '#<EnumType enums=[RED, GREEN, BLUE]>'
+      end
+
+      it 'returns the name for #as_json' do
+        expect(enum.RED.as_json).to eq("RED")
+        expect(enum.GREEN.as_json).to eq("GREEN")
+        expect(enum.BLUE.as_json).to eq("BLUE")
       end
     end
 
