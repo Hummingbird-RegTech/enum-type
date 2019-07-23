@@ -22,7 +22,7 @@ module EnumType
       end
 
       attributes = %i[name value] + attributes
-      klass = Class.new
+      klass = Class.new(EnumClass)
       klass.send(:attr_reader, *attributes)
       klass.send(:attr_reader, :enum_type)
       klass.send(:define_method, :initialize) do |*values|
@@ -33,7 +33,6 @@ module EnumType
           instance_variable_set("@#{name}", values[index])
         end
       end
-      define_inspection_methods(klass)
       klass
     end
 
@@ -42,7 +41,7 @@ module EnumType
 
       # Add name attribute as a String
       attributes = { name: String }.merge!(attributes)
-      klass = Class.new
+      klass = Class.new(EnumClass)
       klass.send(:attr_reader, *attributes.keys)
       klass.send(:attr_reader, :enum_type)
       klass.send(:define_method, :initialize) do |*values|
@@ -58,19 +57,19 @@ module EnumType
           instance_variable_set("@#{name}", values[index])
         end
       end
-      define_inspection_methods(klass)
       klass
     end
 
-    def self.define_inspection_methods(klass)
-      klass.send(:define_method, :to_s) do
-        name.to_s
-      end
-
-      klass.send(:define_method, :inspect) do
-        "\#<Enum:#{name} #{value.inspect}>"
-      end
+    def to_s
+      name.to_s
     end
-    private_class_method :define_inspection_methods
+
+    def inspect
+      "\#<Enum:#{name} #{value.inspect}>"
+    end
+
+    def as_json
+      name
+    end
   end
 end
