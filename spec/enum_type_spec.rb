@@ -97,6 +97,12 @@ RSpec.describe EnumType do
         expect(enum.GREEN.as_json).to eq("GREEN")
         expect(enum.BLUE.as_json).to eq("BLUE")
       end
+
+      it 'accepts arguments to #as_json' do
+        expect(enum.RED.as_json(option: 1)).to eq 'RED'
+        expect(enum.GREEN.as_json(option: 1)).to eq 'GREEN'
+        expect(enum.BLUE.as_json(option: 1)).to eq 'BLUE'
+      end
     end
 
     context 'with array attributes' do
