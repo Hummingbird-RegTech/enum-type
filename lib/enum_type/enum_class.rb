@@ -68,7 +68,7 @@ module EnumType
       "\#<Enum:#{name} #{value.inspect}>"
     end
 
-    def as_json
+    def as_json(*_args)
       name
     end
   end
